@@ -1,0 +1,9 @@
+package events;
+
+import modelo.Pedido;
+
+public interface OnMessageList {
+
+	public void onPedidoRecived(Pedido pos);
+
+}

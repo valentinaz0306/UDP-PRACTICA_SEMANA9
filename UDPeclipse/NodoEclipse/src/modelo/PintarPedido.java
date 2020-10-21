@@ -1,0 +1,83 @@
+package modelo;
+
+import processing.core.PApplet;
+import processing.core.PImage;
+
+public class PintarPedido {
+
+	Pedido pedido;
+	int x, y;
+	PApplet app;
+	PImage burger, jugo, pizza, salad;
+
+	public PintarPedido(Pedido pedido, int x, int y, PApplet app) {
+		super();
+		this.pedido = pedido;
+		this.x = x;
+		this.y = y;
+		this.app = app;
+		burger = app.loadImage("burger.png");
+		jugo = app.loadImage("jugo.png");
+		pizza = app.loadImage("pizza.png");
+		salad = app.loadImage("salad.png");
+
+	}
+
+	public void pintar() {
+		switch (pedido.nombre) {
+		case "burger":
+			app.image(burger, x, y, 100, 100);
+
+			break;
+		case "jugo":
+			app.image(jugo, x, y, 100, 100);
+
+			break;
+		case "pizza":
+			app.image(pizza, x, y, 100, 100);
+
+			break;
+		case "salad":
+			app.image(salad, x, y, 100, 100);
+
+			break;
+
+		default:
+			break;
+		}
+
+	}
+
+	public Pedido getPedido() {
+		return pedido;
+	}
+
+	public void setPedido(Pedido pedido) {
+		this.pedido = pedido;
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	public PApplet getApp() {
+		return app;
+	}
+
+	public void setApp(PApplet app) {
+		this.app = app;
+	}
+
+}

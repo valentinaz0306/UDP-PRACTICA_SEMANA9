@@ -1,0 +1,83 @@
+package main;
+
+import java.util.ArrayList;
+import java.util.Date;
+//import gson
+import com.google.gson.Gson;
+import events.OnMessageList;
+import processing.core.PApplet;
+import modelo.Pedido;
+import modelo.PintarPedido;
+
+public class Main extends PApplet implements OnMessageList{
+	
+	UdpConnection udp; 
+	PintarPedido pruebaPedido; 
+	ArrayList <Pedido> pedidos;
+	ArrayList <PintarPedido> menu; 
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		PApplet.main("main.Main");
+
+	}
+	public void settings() {
+		size(800,800); 
+	}
+
+	public void setup() {
+		pedidos = new ArrayList<Pedido>(); 
+		menu = new ArrayList<PintarPedido>(); 
+		udp = new UdpConnection();
+		udp.start(); 
+		udp.setObserver(this);
+		Date now = new Date();
+		Pedido pido = new Pedido("alo", 1, now ); 
+		pruebaPedido = new PintarPedido(pido,0,0,this); 
+		
+	}
+
+	public void draw() {
+		background(0,255,255); 
+		fill(0); 
+		//test.pintar();
+		for(int i = 0; i < menu.size(); i++) {
+			menu.get(i).pintar();
+		}
+
+		
+	}
+	@Override
+	public void onPedidoRecived(Pedido pos) {
+		pedidos.add(pos); 
+		menu.add(new PintarPedido(pos, pedidos.size()*100, 0, this)); 
+		System.out.println(pedidos.size());	
+	}
+	public void mousePressed() {
+		 
+		for(int i = 0; i < menu.size(); i++) {
+			listo(mouseX, mouseY,menu.get(i) ); 
+		}	
+	}
+	public void listo (int x, int y, PintarPedido p) {
+		
+		if (x >= p.getX() && x<=  p.getX()+p.getTama()
+				
+				){
+			
+			int indexP = pedidos.indexOf(p.getPedido()); 
+			Pedido pa = p.getPedido(); 
+			Gson gson = new Gson(); 
+			String currentP = gson.toJson(pa); 
+			 udp.sendMessage(currentP);
+			 
+			pedidos.remove(p.getPedido()); 
+		    menu.remove(p); 
+		    System.out.println(indexP+"aaaaaa");
+		   
+			
+		}
+		
+	}
+
+}
